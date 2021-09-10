@@ -117,16 +117,16 @@ HTTPPool implements PeerPicker for a pool of HTTP peers.HTTPPool 只有 2 个参
 另一个是 basePath，作为节点间通讯地址的前缀，默认是 /mycache/，那么 http://example.com/mycache/ 开头的请求，就用于节点间的访问。
 因为一个主机上还可能承载其他的服务，加一段 Path 是一个好习惯。比如，大部分网站的 API 接口，一般以 /api 作为前缀。<br>
 HTTPPool的字段：<br>
-self        string<br>
+```self        string<br>
 basePath    string<br>
 mu          sync.Mutex // guards peers and httpGetters<br>
 peers       * consistenthash.Map // 一致性哈希算法的字典，用来根据具体的 key 选择节点。peers是键值指向IP地址，如"小明"→"http://10.0.0.2:8008"。
 httpGetters map[string]* httpGetter <br>
-//httpGetters是一个IP地址指向一个【数据获得器】。即每一个远程节点（的IP地址）指向一个 httpGetter。httpGetter 与远程节点的地址 baseURL 有关。<br>
+//httpGetters是一个IP地址指向一个【数据获得器】。即每一个远程节点（的IP地址）指向一个 httpGetter。httpGetter 与远程节点的地址 baseURL 有关。<br>```
 HTTPPool的方法：<br>
-ServeHTTP(w http.ResponseWriter, r * http.Request) ：响应其他节点的请求。<br>
+```ServeHTTP(w http.ResponseWriter, r * http.Request) ：响应其他节点的请求。<br>
 Set(peers ...string) ：传入所有节点（包括本节点）的IP地址的集合，设置同辈节点的信息。<br>
-PickPeer(key string) (PeerGetter, bool)： 返回键值对应的【数据获得器】。<br>
+PickPeer(key string) (PeerGetter, bool)： 返回键值对应的【数据获得器】。```
 
 #### consistent hash
 结构体consistenthash.Map是基于一致性哈希的字典。功能：对于给定的key值，返回对应缓存节点（的名称）；或者添加节点。<br>
