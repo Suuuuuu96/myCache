@@ -121,13 +121,15 @@ HTTPPool的字段：<br>
 basePath    string
 mu          sync.Mutex 
 peers       * consistenthash.Map 
-httpGetters map[string]* httpGetter ```
+httpGetters map[string]* httpGetter 
+```
 其中，peers是一致性哈希算法的字典，用来根据具体的 key 选择节点。peers是键值指向IP地址，如"小明"→"http://10.0.0.2:8008"。<br>
 httpGetters是一个IP地址指向一个【数据获得器】。即每一个远程节点（的IP地址）指向一个 httpGetter。httpGetter 与远程节点的地址 baseURL 有关。<br>
 HTTPPool的方法：<br>
 ```ServeHTTP(w http.ResponseWriter, r * http.Request) ：响应其他节点的请求。
 Set(peers ...string) ：传入所有节点（包括本节点）的IP地址的集合，设置同辈节点的信息。
-PickPeer(key string) (PeerGetter, bool)： 返回键值对应的【数据获得器】。```
+PickPeer(key string) (PeerGetter, bool)： 返回键值对应的【数据获得器】。
+```
 
 #### consistent hash
 结构体consistenthash.Map是基于一致性哈希的字典。功能：对于给定的key值，返回对应缓存节点（的名称）；或者添加节点。<br>
