@@ -117,7 +117,8 @@ HTTPPool implements PeerPicker for a pool of HTTP peers.HTTPPool 只有 2 个参
 另一个是 basePath，作为节点间通讯地址的前缀，默认是 /mycache/，那么 http://example.com/mycache/ 开头的请求，就用于节点间的访问。
 因为一个主机上还可能承载其他的服务，加一段 Path 是一个好习惯。比如，大部分网站的 API 接口，一般以 /api 作为前缀。<br>
 HTTPPool的字段：<br>
-```self        string
+```
+self        string
 basePath    string
 mu          sync.Mutex 
 peers       * consistenthash.Map 
@@ -126,7 +127,8 @@ httpGetters map[string]* httpGetter
 其中，peers是一致性哈希算法的字典，用来根据具体的 key 选择节点。peers是键值指向IP地址，如"小明"→"http://10.0.0.2:8008"。<br>
 httpGetters是一个IP地址指向一个【数据获得器】。即每一个远程节点（的IP地址）指向一个 httpGetter。httpGetter 与远程节点的地址 baseURL 有关。<br>
 HTTPPool的方法：<br>
-```ServeHTTP(w http.ResponseWriter, r * http.Request) ：响应其他节点的请求。
+```
+ServeHTTP(w http.ResponseWriter, r * http.Request) ：响应其他节点的请求。
 Set(peers ...string) ：传入所有节点（包括本节点）的IP地址的集合，设置同辈节点的信息。
 PickPeer(key string) (PeerGetter, bool)： 返回键值对应的【数据获得器】。
 ```
