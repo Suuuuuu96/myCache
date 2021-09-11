@@ -133,8 +133,9 @@ single flight机制可以解决缓存击穿问题。<br><br>
 
 <br>GroupCall 是 singleflight 的主数据结构，管理不同 key 的请求(call)。有两个方法：<br>
 * Do方法，接受一个字符串Key和一个待调用的函数，会返回调用函数的结果和错误。使用Do方法的时候，它会根据提供的Key判断是否去真正调用fn函数。同一个 key，在同一时间只有第一次调用Do方法时才会去执行fn函数，其他并发的请求会等待调用的执行结果。<br>
-* fn是一个能返回key对应值的函数。fn函数的具体内容：使用 PickPeer() 方法选择节点，若非本机节点，则调用 getFromPeer() 从远程获取。若是本机节点或远程获取失败，则回退到 getLocally()。<br>
-<br>例子：<br>
+* fn是一个能返回key对应值的函数。fn函数的具体内容：使用 PickPeer() 方法选择节点，若非本机节点，则调用 getFromPeer() 从远程获取。若是本机节点或远程获取失败，则回退到 getLocally()。
+
+例子：<br>
 第0秒协程A到来，第10秒协程B到来，第20秒协程C到来，这三个协程都是请求键值"张三"对应的值。<br>
 第0秒，协程A到来，为了防止自己读取（及修改）GroupCall时GroupCall被别人修改，所以使用mu锁定。<br>
 A查看GroupCall.m，发现并没有自己想要的值（的请求）。<br>
