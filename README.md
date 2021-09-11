@@ -4,7 +4,8 @@
 > There are only two hard things in Computer Science: cache invalidation and naming things (计算科学中只有两件难事：缓存失效和命名。)
 > <p align="right">– Phil Karlton</p>
 在高并发的分布式的系统中，缓存是必不可少的一部分。<br>没有缓存对系统的加速和阻挡大量的请求直接落到系统的底层，系统是很难撑住高并发的冲击，所以分布式系统中缓存的设计是很重要的一环。Golang并没有自带的分布式缓存框架，比较流行的第三方框架有groupcache等。参考了相关框架的开发思路和源代码后，笔者开发了一个简单的分布式缓存框架——myCache，目前已具备了常见分布式缓存框架需要的基础功能。
-<br>本框架中，键值需要是string类型，缓存值需要是[]byte类型（或可以转成为[]byte）。选择 byte 类型是为了能够支持任意的数据类型的存储，例如字符串、图片等。
+<br>本框架中，键值需要是string类型，缓存值需要是[]byte类型（或可以转成为[]byte）。选择 byte 类型是为了能够支持任意的数据类型的存储，例如字符串、图片等。<br>
+![image](https://github.com/Suuuuuu96/myCache/blob/main/img/Cache%20Aside%E6%A8%A1%E5%BC%8F-%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E5%9B%BE.png)
 ## 功能
 * 缓存的分布式存储：本框架利用一致性哈希(consistent hashing)算法确定各键值的对应缓存节点（的IP地址），同时引入虚拟节点解决数据倾斜问题。
 * 节点通讯：本框架中，每一个节点都同时是基于HTTP的服务端和客户端，能向其他节点发出请求、也能响应其他节点的请求。
